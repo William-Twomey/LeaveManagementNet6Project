@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using LeaveManagement.Web.ViewModels.Configurations;
+using LeaveManagement.Web.Contracts;
+using LeaveManagement.Web.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ builder.Services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireC
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//Register new generics and classes to use on project
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositories<>));
+builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
+
+//Register Automapper to use in project
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
